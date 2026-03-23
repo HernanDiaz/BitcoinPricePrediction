@@ -1,0 +1,33 @@
+{
+  "feature_names": [
+    "Open",
+    "High",
+    "Low",
+    "Close",
+    "Volume"
+  ],
+  "feature_importance": [
+    [
+      "Close",
+      0.022722
+    ],
+    [
+      "High",
+      0.020909
+    ],
+    [
+      "Open",
+      0.005071
+    ],
+    [
+      "Low",
+      0.001022
+    ],
+    [
+      "Volume",
+      0.0
+    ]
+  ],
+  "base_value": 0.0015718040599244651,
+  "experiment_id": "XGBoost_G0"
+}

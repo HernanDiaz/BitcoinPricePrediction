@@ -1,0 +1,46 @@
+# Virtual environment
+.venv/
+venv/
+env/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+
+# Trained models (too large for git — available on Zenodo)
+results/models/
+
+# Temporary files
+*.tmp
+*.log
+tmp_pip/
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Old exploration notebook (not part of the paper)
+Copia_de_resultadosPaperBitcoinJesus.ipynb
+
+# Old dataset (superseded by data/dataset_enriched.csv)
+dataset_COMPLETO_con_OHLCV_20251221_014211.csv
+
+# Optuna storage
+*.db
+
+# Environment setup
+setup_venv.bat

@@ -1,0 +1,21 @@
+Rank,Feature,Mean |SHAP|
+1,Short_Term_Holder_SOPR,1.061315
+2,Drawdown_from_ATH,0.816548
+3,RSI_14,0.731661
+4,Price_to_Realized,0.492161
+5,Dist_to_SMA200,0.460487
+6,Supply_in_Loss_pct,0.352305
+7,OBV,0.346949
+8,MVRV,0.33587
+9,logret_1d,0.323077
+10,Supply_in_Loss,0.302384
+11,UTXOs_in_Loss,0.239638
+12,Supply_in_Profit_pct,0.23475
+13,Supply_in_Profit,0.226079
+14,Stoch_K_14_3,0.211174
+15,UTXOs_in_Loss_pct,0.172034
+16,BB_PercentB_20,0.166106
+17,Volume,0.152502
+18,UTXOs_in_Profit_pct,0.151611
+19,Net_Realized_Profit_and_Loss__NRPL,0.151009
+20,Spent_Output_Profit_Ratio__SOPR_Day__1,0.144482

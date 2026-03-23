@@ -1,0 +1,238 @@
+project:
+  name: "bitcoin_direction_prediction"
+  random_seed: 42
+  device: "cuda"  # "cuda" or "cpu"
+
+paths:
+  dataset: "dataset_COMPLETO_enriched.csv"
+  results: "../results"
+
+data:
+  date_column: "Date"
+  target_column: "y"
+
+# ─────────────────────────────────────────────
+# Feature group definitions for ablation study
+# ─────────────────────────────────────────────
+feature_groups:
+  G0:
+    name: "OHLCV"
+    description: "Raw market data only (baseline)"
+    features:
+      - Open
+      - High
+      - Low
+      - Close
+      - Volume
+
+  G1:
+    name: "OHLCV_Technical"
+    description: "OHLCV + classical technical indicators"
+    features:
+      - Open
+      - High
+      - Low
+      - Close
+      - Volume
+      - RSI_14
+      - Stoch_K_14_3
+      - Stoch_D_14_3
+      - BB_PercentB_20
+      - OBV
+      - Dist_to_SMA200
+      - ROI30d
+      - Drawdown_from_ATH
+      - Sharpe_30d
+      - logret_1d
+
+  G2:
+    name: "OHLCV_OnChain"
+    description: "OHLCV + blockchain on-chain metrics"
+    features:
+      - Open
+      - High
+      - Low
+      - Close
+      - Volume
+      - MVRV
+      - RealizedPrice
+      - Short_Term_Holder_SOPR
+      - Supply_in_Loss
+      - Spent_Output_Profit_Ratio__SOPR_Day__1
+      - Net_Realized_Profit_and_Loss__NRPL
+      - UTXOs_in_Loss
+      - UTXOs_in_Loss_pct
+      - Supply_in_Loss_pct
+      - Adjusted_SOPR__aSOPR
+      - Price_to_Realized
+      - MVRV_z_365
+      - Supply_in_Profit_pct
+      - UTXOs_in_Profit_pct
+      - CapMVRVCur
+      - Supply_in_Profit
+      - Net_Unrealized_Loss__NUL
+      - Realized_Cap_UTXO_Age_Bands_pct
+
+  G3:
+    name: "Full"
+    description: "OHLCV + technical + on-chain (complete feature set)"
+    features: "all"  # all columns except Date and y
+
+# Technical and on-chain sub-lists (used by DualEncoder to split G3)
+technical_features:
+  - RSI_14
+  - Stoch_K_14_3
+  - Stoch_D_14_3
+  - BB_PercentB_20
+  - OBV
+  - Dist_to_SMA200
+  - ROI30d
+  - Drawdown_from_ATH
+  - Sharpe_30d
+  - logret_1d
+
+onchain_features:
+  - MVRV
+  - RealizedPrice
+  - Short_Term_Holder_SOPR
+  - Supply_in_Loss
+  - Spent_Output_Profit_Ratio__SOPR_Day__1
+  - Net_Realized_Profit_and_Loss__NRPL
+  - UTXOs_in_Loss
+  - UTXOs_in_Loss_pct
+  - Supply_in_Loss_pct
+  - Adjusted_SOPR__aSOPR
+  - Price_to_Realized
+  - MVRV_z_365
+  - Supply_in_Profit_pct
+  - UTXOs_in_Profit_pct
+  - CapMVRVCur
+  - Supply_in_Profit
+  - Net_Unrealized_Loss__NUL
+  - Realized_Cap_UTXO_Age_Bands_pct
+
+# ─────────────────────────────────────────────
+# Walk-forward expanding window folds
+# Each fold: train on [2013-01-01, train_end], test on [test_start, test_end]
+# ─────────────────────────────────────────────
+walk_forward:
+  train_start: "2013-01-01"
+  folds:
+    - fold: 1
+      train_end: "2018-12-31"
+      test_start: "2019-01-01"
+      test_end: "2019-12-31"
+    - fold: 2
+      train_end: "2019-12-31"
+      test_start: "2020-01-01"
+      test_end: "2020-12-31"
+    - fold: 3
+      train_end: "2020-12-31"
+      test_start: "2021-01-01"
+      test_end: "2021-12-31"
+    - fold: 4
+      train_end: "2021-12-31"
+      test_start: "2022-01-01"
+      test_end: "2022-12-31"
+    - fold: 5
+      train_end: "2022-12-31"
+      test_start: "2023-01-01"
+      test_end: "2023-12-31"
+    - fold: 6
+      train_end: "2023-12-31"
+      test_start: "2024-01-01"
+      test_end: "2024-12-31"
+    - fold: 7
+      train_end: "2024-12-31"
+      test_start: "2025-01-01"
+      test_end: "2025-12-31"
+
+# ─────────────────────────────────────────────
+# Model hyperparameters
+# ─────────────────────────────────────────────
+models:
+  random_forest:
+    n_estimators: 500
+    max_depth: 10
+    min_samples_split: 20
+    min_samples_leaf: 10
+    max_features: "sqrt"
+    class_weight: "balanced"
+    n_jobs: -1
+
+  xgboost:
+    n_estimators: 500
+    max_depth: 6
+    learning_rate: 0.05
+    subsample: 0.8
+    colsample_bytree: 0.8
+    min_child_weight: 5
+    gamma: 0.1
+    reg_alpha: 0.1
+    reg_lambda: 1.0
+    # scale_pos_weight computed automatically from class distribution per fold
+    eval_metric: "logloss"
+    early_stopping_rounds: 30
+
+  cnn_lstm:
+    sequence_length: 30
+    conv_filters: 64
+    conv_kernel_size: 3
+    lstm_hidden: 128
+    lstm_layers: 2
+    dropout: 0.3
+    batch_size: 64
+    epochs: 150
+    learning_rate: 0.001
+    weight_decay: 0.0001
+    early_stopping_patience: 20
+    lr_scheduler_patience: 10
+    lr_scheduler_factor: 0.5
+    lr_min: 0.00001
+
+  dual_encoder:
+    sequence_length: 30
+    conv_filters: 64
+    conv_kernel_size: 3
+    lstm_hidden: 128
+    lstm_layers: 2
+    n_attention_heads: 4
+    dropout: 0.3
+    batch_size: 64
+    epochs: 150
+    learning_rate: 0.001
+    weight_decay: 0.0001
+    early_stopping_patience: 20
+    lr_scheduler_patience: 10
+    lr_scheduler_factor: 0.5
+    lr_min: 0.00001
+
+  mlp_dual_encoder:
+    hidden_dim: 256
+    n_context_tokens: 8
+    n_heads: 4
+    dropout: 0.3
+    batch_size: 128
+    epochs: 300
+    learning_rate: 0.0005
+    weight_decay: 0.0001
+    early_stopping_patience: 40
+    lr_min: 0.00001
+
+# ─────────────────────────────────────────────
+# Evaluation settings
+# ─────────────────────────────────────────────
+evaluation:
+  bootstrap_n_iterations: 1000
+  bootstrap_ci: 0.95
+  significance_level: 0.05
+  # Metrics to compute and report
+  metrics:
+    - accuracy
+    - precision_macro
+    - recall_macro
+    - f1_macro
+    - f1_weighted
+    - roc_auc
+    - mcc
+    - log_loss

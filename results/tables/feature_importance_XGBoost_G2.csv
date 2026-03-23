@@ -1,0 +1,21 @@
+Rank,Feature,Mean |SHAP|
+1,Price_to_Realized,2.370089
+2,MVRV,1.828973
+3,CapMVRVCur,0.764895
+4,Close,0.458396
+5,Short_Term_Holder_SOPR,0.36213
+6,Volume,0.280547
+7,RealizedPrice,0.256408
+8,Net_Realized_Profit_and_Loss__NRPL,0.22871
+9,Open,0.210417
+10,Adjusted_SOPR__aSOPR,0.197985
+11,Spent_Output_Profit_Ratio__SOPR_Day__1,0.195567
+12,Supply_in_Profit,0.18389
+13,MVRV_z_365,0.180647
+14,Supply_in_Loss,0.170595
+15,Realized_Cap_UTXO_Age_Bands_pct,0.151247
+16,Net_Unrealized_Loss__NUL,0.135907
+17,Supply_in_Loss_pct,0.124327
+18,UTXOs_in_Loss_pct,0.085939
+19,Supply_in_Profit_pct,0.073605
+20,UTXOs_in_Profit_pct,0.073356
