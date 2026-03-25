@@ -1,0 +1,306 @@
+{
+  "wilcoxon": [
+    {
+      "model_A": "XGBoost",
+      "model_B": "LightGBM",
+      "mean_mcc_A": 0.5399,
+      "mean_mcc_B": 0.5335,
+      "delta_mcc": 0.0064,
+      "statistic": 9.0,
+      "pvalue": 0.8438,
+      "pvalue_bonferroni": 1.0,
+      "significant": false
+    },
+    {
+      "model_A": "XGBoost",
+      "model_B": "MLP_Simple",
+      "mean_mcc_A": 0.5399,
+      "mean_mcc_B": 0.4504,
+      "delta_mcc": 0.0895,
+      "statistic": 1.0,
+      "pvalue": 0.0625,
+      "pvalue_bonferroni": 0.625,
+      "significant": false
+    },
+    {
+      "model_A": "XGBoost",
+      "model_B": "MLP_Dual_NoAttn",
+      "mean_mcc_A": 0.5399,
+      "mean_mcc_B": 0.5559,
+      "delta_mcc": -0.016,
+      "statistic": 9.0,
+      "pvalue": 0.8438,
+      "pvalue_bonferroni": 1.0,
+      "significant": false
+    },
+    {
+      "model_A": "XGBoost",
+      "model_B": "MLP_Dual_V2",
+      "mean_mcc_A": 0.5399,
+      "mean_mcc_B": 0.648,
+      "delta_mcc": -0.1081,
+      "statistic": 0.0,
+      "pvalue": 0.0312,
+      "pvalue_bonferroni": 0.3125,
+      "significant": false
+    },
+    {
+      "model_A": "LightGBM",
+      "model_B": "MLP_Simple",
+      "mean_mcc_A": 0.5335,
+      "mean_mcc_B": 0.4504,
+      "delta_mcc": 0.0831,
+      "statistic": 1.0,
+      "pvalue": 0.0625,
+      "pvalue_bonferroni": 0.625,
+      "significant": false
+    },
+    {
+      "model_A": "LightGBM",
+      "model_B": "MLP_Dual_NoAttn",
+      "mean_mcc_A": 0.5335,
+      "mean_mcc_B": 0.5559,
+      "delta_mcc": -0.0224,
+      "statistic": 9.0,
+      "pvalue": 0.8438,
+      "pvalue_bonferroni": 1.0,
+      "significant": false
+    },
+    {
+      "model_A": "LightGBM",
+      "model_B": "MLP_Dual_V2",
+      "mean_mcc_A": 0.5335,
+      "mean_mcc_B": 0.648,
+      "delta_mcc": -0.1146,
+      "statistic": 0.0,
+      "pvalue": 0.0312,
+      "pvalue_bonferroni": 0.3125,
+      "significant": false
+    },
+    {
+      "model_A": "MLP_Simple",
+      "model_B": "MLP_Dual_NoAttn",
+      "mean_mcc_A": 0.4504,
+      "mean_mcc_B": 0.5559,
+      "delta_mcc": -0.1055,
+      "statistic": 0.0,
+      "pvalue": 0.0312,
+      "pvalue_bonferroni": 0.3125,
+      "significant": false
+    },
+    {
+      "model_A": "MLP_Simple",
+      "model_B": "MLP_Dual_V2",
+      "mean_mcc_A": 0.4504,
+      "mean_mcc_B": 0.648,
+      "delta_mcc": -0.1977,
+      "statistic": 0.0,
+      "pvalue": 0.0312,
+      "pvalue_bonferroni": 0.3125,
+      "significant": false
+    },
+    {
+      "model_A": "MLP_Dual_NoAttn",
+      "model_B": "MLP_Dual_V2",
+      "mean_mcc_A": 0.5559,
+      "mean_mcc_B": 0.648,
+      "delta_mcc": -0.0922,
+      "statistic": 1.0,
+      "pvalue": 0.0625,
+      "pvalue_bonferroni": 0.625,
+      "significant": false
+    }
+  ],
+  "mcnemar": [
+    {
+      "model_A": "XGBoost",
+      "model_B": "LightGBM",
+      "n00": 563,
+      "n01": 130,
+      "n10": 137,
+      "n11": 1716,
+      "statistic": 0.1348,
+      "pvalue": 0.7135,
+      "pvalue_bonferroni": 1.0,
+      "significant": false
+    },
+    {
+      "model_A": "XGBoost",
+      "model_B": "MLP_Simple",
+      "n00": 439,
+      "n01": 254,
+      "n10": 363,
+      "n11": 1490,
+      "statistic": 18.9044,
+      "pvalue": 0.0,
+      "pvalue_bonferroni": 0.0001,
+      "significant": true
+    },
+    {
+      "model_A": "XGBoost",
+      "model_B": "MLP_Dual_NoAttn",
+      "n00": 350,
+      "n01": 343,
+      "n10": 338,
+      "n11": 1515,
+      "statistic": 0.0235,
+      "pvalue": 0.8782,
+      "pvalue_bonferroni": 1.0,
+      "significant": false
+    },
+    {
+      "model_A": "XGBoost",
+      "model_B": "MLP_Dual_V2",
+      "n00": 299,
+      "n01": 394,
+      "n10": 277,
+      "n11": 1576,
+      "statistic": 20.0537,
+      "pvalue": 0.0,
+      "pvalue_bonferroni": 0.0001,
+      "significant": true
+    },
+    {
+      "model_A": "LightGBM",
+      "model_B": "MLP_Simple",
+      "n00": 450,
+      "n01": 250,
+      "n10": 352,
+      "n11": 1494,
+      "statistic": 16.9452,
+      "pvalue": 0.0,
+      "pvalue_bonferroni": 0.0004,
+      "significant": true
+    },
+    {
+      "model_A": "LightGBM",
+      "model_B": "MLP_Dual_NoAttn",
+      "n00": 364,
+      "n01": 336,
+      "n10": 324,
+      "n11": 1522,
+      "statistic": 0.1833,
+      "pvalue": 0.6685,
+      "pvalue_bonferroni": 1.0,
+      "significant": false
+    },
+    {
+      "model_A": "LightGBM",
+      "model_B": "MLP_Dual_V2",
+      "n00": 303,
+      "n01": 397,
+      "n10": 273,
+      "n11": 1573,
+      "statistic": 22.5806,
+      "pvalue": 0.0,
+      "pvalue_bonferroni": 0.0,
+      "significant": true
+    },
+    {
+      "model_A": "MLP_Simple",
+      "model_B": "MLP_Dual_NoAttn",
+      "n00": 429,
+      "n01": 373,
+      "n10": 259,
+      "n11": 1485,
+      "statistic": 20.2041,
+      "pvalue": 0.0,
+      "pvalue_bonferroni": 0.0001,
+      "significant": true
+    },
+    {
+      "model_A": "MLP_Simple",
+      "model_B": "MLP_Dual_V2",
+      "n00": 350,
+      "n01": 452,
+      "n10": 226,
+      "n11": 1518,
+      "statistic": 74.6681,
+      "pvalue": 0.0,
+      "pvalue_bonferroni": 0.0,
+      "significant": true
+    },
+    {
+      "model_A": "MLP_Dual_NoAttn",
+      "model_B": "MLP_Dual_V2",
+      "n00": 434,
+      "n01": 254,
+      "n10": 142,
+      "n11": 1716,
+      "statistic": 31.1136,
+      "pvalue": 0.0,
+      "pvalue_bonferroni": 0.0,
+      "significant": true
+    }
+  ],
+  "model_summary": [
+    {
+      "Model": "XGBoost",
+      "MCC_mean": 0.5399,
+      "MCC_std": 0.0534,
+      "MCC_values": [
+        0.5396,
+        0.6017,
+        0.5122,
+        0.4907,
+        0.4769,
+        0.6184
+      ]
+    },
+    {
+      "Model": "LightGBM",
+      "MCC_mean": 0.5335,
+      "MCC_std": 0.0531,
+      "MCC_values": [
+        0.4968,
+        0.5688,
+        0.531,
+        0.4823,
+        0.4896,
+        0.6325
+      ]
+    },
+    {
+      "Model": "MLP_Simple",
+      "MCC_mean": 0.4504,
+      "MCC_std": 0.0706,
+      "MCC_values": [
+        0.3049,
+        0.5131,
+        0.5019,
+        0.4939,
+        0.4337,
+        0.4548
+      ]
+    },
+    {
+      "Model": "MLP_Dual_NoAttn",
+      "MCC_mean": 0.5559,
+      "MCC_std": 0.0783,
+      "MCC_values": [
+        0.4246,
+        0.5331,
+        0.5302,
+        0.5464,
+        0.637,
+        0.664
+      ]
+    },
+    {
+      "Model": "MLP_Dual_V2",
+      "MCC_mean": 0.648,
+      "MCC_std": 0.0631,
+      "MCC_values": [
+        0.5902,
+        0.6666,
+        0.7507,
+        0.5658,
+        0.6204,
+        0.6945
+      ]
+    }
+  ],
+  "n_bonferroni_pairs": 10,
+  "alpha": 0.05,
+  "alpha_bonferroni": 0.005
+}
