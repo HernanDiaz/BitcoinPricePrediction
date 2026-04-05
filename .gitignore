@@ -18,7 +18,7 @@ __pycache__/
 dist/
 build/
 
-# Trained models (too large for git — available on Zenodo)
+# Trained models (too large for git)
 results/models/
 
 # Temporary files
@@ -33,14 +33,78 @@ tmp_pip/
 .DS_Store
 Thumbs.db
 
-# Old exploration notebook (not part of the paper)
+# Old exploration notebook
 Copia_de_resultadosPaperBitcoinJesus.ipynb
-
-# Old dataset (superseded by data/dataset_enriched.csv)
-dataset_COMPLETO_con_OHLCV_20251221_014211.csv
 
 # Optuna storage
 *.db
 
 # Environment setup
 setup_venv.bat
+
+# ─── LaTeX auxiliary files ────────────────────────────────────────────────────
+*.aux
+*.bbl
+*.blg
+*.out
+*.spl
+*.abs
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+
+# ─── Datasets (large CSVs — not versioned in git) ────────────────────────────
+dataset_COMPLETO_con_OHLCV_20251221_014211.csv
+dataset_COMPLETO_con_OHLCV_20251221_014211_FIXED.csv
+dataset_COMPLETO_enriched.csv
+bitcoin_dataset_ULTIMATE_579_metricas.csv
+
+# ─── Claude internal files ────────────────────────────────────────────────────
+.claude/
+
+# ─── Fold 7 / 2025 experiments (out-of-distribution regime, not in paper) ────
+run_backtesting_2025_test.py
+onchain_direction/experiments/run_backtesting_2025.py
+onchain_direction/experiments/run_backtesting_2025_fold7.py
+onchain_direction/experiments/run_mc_backtesting_2025.py
+onchain_direction/experiments/save_all_models_fold7.py
+results/backtesting/*2025*
+
+# ─── Other journal drafts (ESWA, Information Fusion) ─────────────────────────
+paper/ESWA/
+paper/fusion/
+paper/els-cas-templates/
+paper/1-s2.0-S0952197625010875-main.docx
+
+# ─── EAAI paper: compiled artefacts and temp versions ────────────────────────
+paper/EAAI/main_final.*
+paper/EAAI/main_tmp.*
+paper/EAAI/eaai_final.*
+paper/EAAI/figures/Captura.PNG
+paper/EAAI/figures/mc_asym_*.pdf
+paper/EAAI/figures/dynamic_threshold_best.pdf
+
+# ─── DECA v3 (not used in final paper) ───────────────────────────────────────
+onchain_direction/src/models/mlp_dual_encoder_v3.py
+onchain_direction/experiments/run_optuna_mlp_v3.py
+onchain_direction/experiments/run_v3_analysis.py
+results/optuna/deca_v3_optuna_final.json
+results/optuna/optuna_deca_v3_50trials.csv
+
+# ─── Large binary results ─────────────────────────────────────────────────────
+results/shap/*.npy
+
+# ─── Utility / regeneration scripts (not part of reproducible pipeline) ──────
+regen_attn_figs.py
+regen_mc_coverage_plot.py
+regen_mc_figs.py
+run_fig_b_only.py
+
+# ─── Superseded backtesting scripts (replaced by run_backtesting_omole.py) ───
+onchain_direction/experiments/run_backtesting.py
+onchain_direction/experiments/run_backtesting_mc.py
+run_backtesting_mc_asym.py
+
+# ─── Fold 7 / 2025 utilities ─────────────────────────────────────────────────
+onchain_direction/experiments/save_deca_v2_weights.py
+onchain_direction/scripts/fix_dataset_2025.py
