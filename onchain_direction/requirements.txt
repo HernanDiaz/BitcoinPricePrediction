@@ -1,36 +1,37 @@
 # ─────────────────────────────────────────────────────────────────────────────
 # Bitcoin Price Direction Prediction — Q1 Paper
-# Python 3.11+
+# Python 3.13.3  |  Tested on Windows 10, NVIDIA RTX 5060 Ti
 #
 # PyTorch must be installed separately with the correct CUDA version.
-# For RTX 5060 (Blackwell, sm_120) run FIRST:
+# For RTX 5060 Ti (Blackwell, sm_120, CUDA 12.8) run FIRST:
 #   pip install torch torchvision --index-url https://download.pytorch.org/whl/cu128
 # Then install the rest:
 #   pip install -r requirements.txt
 # ─────────────────────────────────────────────────────────────────────────────
 
 # Core ML
-scikit-learn==1.4.2
-xgboost==2.0.3
-shap==0.45.1
+scikit-learn==1.8.0
+xgboost==3.2.0
+lightgbm==4.6.0
+shap==0.51.0
+optuna==4.8.0
 
 # Data
-numpy==1.26.4
-pandas==2.2.2
-scipy==1.13.0
+numpy==2.4.3
+pandas==3.0.1
+scipy==1.17.1
 
 # Deep Learning (PyTorch installed separately — see above)
-# torch>=2.6.0
+# torch==2.11.0+cu128
 
 # Statistical tests
-statsmodels==0.14.2
-pingouin==0.5.4
+statsmodels==0.14.6
 
 # Visualization
-matplotlib==3.9.0
+matplotlib==3.10.8
 seaborn==0.13.2
 
 # Utilities
-pyyaml==6.0.1
-tqdm==4.66.4
-joblib==1.4.2
+pyyaml==6.0.3
+tqdm==4.67.3
+joblib==1.5.3
