@@ -1,61 +1,101 @@
-# OnChain Direction: Bitcoin Price Direction Prediction via On-Chain Metrics and Dual Encoder Cross-Attention
+# Bitcoin Price Direction Prediction via On-Chain Metrics and Dual-Encoder Cross-Attention (DECA)
 
-> **Paper under review** — Information Fusion (Elsevier, Q1, IF~18)
+> **Paper submitted to Engineering Applications of Artificial Intelligence** (Elsevier, Q1, IF~8)
 
 ## Overview
 
 This repository contains the full reproducible implementation for the paper:
 
-> *"Predicting Bitcoin Daily Price Direction Using On-Chain Blockchain Metrics and a Dual Encoder with Cross-Attention"*
+> *"Predicting Bitcoin Daily Price Direction Using On-Chain Blockchain Metrics and a Dual-Encoder Cross-Attention Architecture"*
 
-We propose a novel **MLP Dual Encoder** architecture with bidirectional cross-attention that processes technical indicators and on-chain blockchain metrics through independent branches, enabling interpretable feature interaction learning across both domains.
+We propose **DECA (Dual-Encoder Cross-Attention)**, a novel architecture that routes technical indicators and blockchain on-chain metrics through independent residual MLP encoders and learns their cross-domain interactions via cross-attention. DECA provides both interpretable attention weights and uncertainty-aware predictions through Monte Carlo Dropout.
 
-### Key Results (Walk-Forward CV, 2019–2024, 6 folds)
+All models are evaluated under a **six-fold expanding-window walk-forward cross-validation** protocol (2019–2024), which is significantly more rigorous than the simple 80/20 train-test splits used in prior work.
+
+---
+
+## Key Results (folds 1–6, 2019–2024)
 
 | Model | Accuracy | MCC | AUC-ROC |
 |---|---|---|---|
-| XGBoost G3 + Optuna | **0.769** | **0.533** | **0.852** |
-| XGBoost G3 (baseline) | 0.769 | 0.533 | 0.852 |
-| RandomForest G3 | 0.668 | 0.360 | 0.769 |
-| MLP Dual Encoder G3 | 0.645 | 0.302 | 0.721 |
-| Baseline (OHLCV only) | 0.490 | 0.000 | 0.500 |
+| **DECA (ours)** | 0.819 | **0.648** | 0.910 |
+| SVM G3 + Optuna | **0.827** | 0.633 | **0.913** |
+| LightGBM G3 + Optuna | 0.769 | 0.541 | 0.857 |
+| XGBoost G3 + Optuna | 0.767 | 0.541 | 0.857 |
+| MLP Dual (no attention) | 0.769 | 0.556 | 0.871 |
+| MLP Simple | 0.716 | 0.450 | 0.807 |
+| CNN-LSTM G3 | ~0.490 | ~0.010 | ~0.520 |
 
-**Core scientific finding:** On-chain metrics are the dominant predictive signal — XGBoost with on-chain only (G2) achieves MCC=0.387 vs. MCC=0.036 with technical indicators only (G1), a 10× difference.
+DECA and SVM are statistically equivalent in directional accuracy (McNemar p=1.0 after Bonferroni correction). DECA additionally provides cross-attention interpretability and calibrated epistemic uncertainty via Monte Carlo Dropout.
+
+**Core ablation finding:** On-chain metrics provide approximately **10x more predictive signal** than technical indicators alone (XGBoost G2 MCC=0.387 vs G1 MCC=0.036).
+
+### MC Dropout — Selective Prediction
+
+| Coverage | Accuracy |
+|---|---|
+| 100% | 81.9% |
+| 75% | 89.2% |
+| 50% | **96.4%** |
+
+### Backtesting (Omole 2025 conditions: long/short, 0.5% commission, 30% tax, $1,000 capital)
+
+| Strategy | Annualised ROR |
+|---|---|
+| Buy & Hold | 70% |
+| CNN-LSTM | -91% |
+| XGBoost | 1,864% |
+| LightGBM | 1,896% |
+| SVM | 3,790% |
+| DECA (deterministic) | 3,922% |
+| **MC(k=1) dynamic threshold** | **4,013%** |
+| Omole (2025) reference (*) | 4,970% |
+
+(*) Omole uses a simple train-test split; results are not directly comparable under our walk-forward protocol.
 
 ---
 
 ## Project Structure
 
 ```
-onchain_direction/         # Main source package
-├── config.yaml            # Central configuration (folds, features, hyperparameters)
-├── requirements.txt       # Python dependencies
-├── src/
-│   ├── data/              # Dataset loading, feature groups, preprocessing
-│   ├── models/            # RF, XGBoost, CNN-LSTM, MLP Dual Encoder
-│   ├── validation/        # Walk-forward cross-validation
-│   ├── evaluation/        # Metrics, bootstrap CI, statistical tests
-│   └── visualization/     # Plots and LaTeX tables
-├── experiments/
-│   ├── run_ablation.py    # Full ablation (4 groups x 5 models)
-│   ├── run_mlp_dual.py    # MLP Dual Encoder experiment
-│   ├── run_shap.py        # SHAP interpretability analysis
-│   ├── run_stats.py       # Statistical significance tests
-│   ├── run_optuna_xgb.py  # XGBoost Bayesian optimisation (300 trials)
-│   └── run_optuna_lgbm.py # LightGBM Bayesian optimisation (300 trials)
-└── scripts/
-    └── enrich_dataset.py  # Download additional on-chain features
+paper/EAAI/                        # LaTeX manuscript (submitted to EAAI)
+    main.tex                       # Full paper source
+    main.pdf                       # Compiled PDF (24 pages)
+    references.bib
+    figures/                       # All paper figures (PDF)
 
-data/
-└── dataset_enriched.csv   # Full dataset (2013–2025, 33 features + target)
+onchain_direction/
+    requirements.txt               # Pinned dependencies (Python 3.13.3)
+    src/
+        data/                      # Dataset loading, feature groups, preprocessing
+        models/                    # RF, XGBoost, LightGBM, SVM, CNN-LSTM, DECA
+        validation/                # Walk-forward cross-validation
+        evaluation/                # MCC, AUC, McNemar, Wilcoxon
+        visualization/             # Elsevier-formatted plots
+    experiments/
+        run_optuna_mlp.py          # DECA Optuna tuning (50 trials)
+        run_optuna_svm.py          # SVM Optuna tuning (50 trials)
+        run_optuna_cnn_lstm.py     # CNN-LSTM Optuna tuning (50 trials)
+        run_paper_plots.py         # Generate all paper figures
+        run_paper_stats.py         # McNemar / Wilcoxon statistical tests
+        run_paper_shap.py          # SHAP feature importance
+        run_attention_analysis.py  # Extract cross-attention weights
+        run_attention_plots.py     # Cross-attention interpretability figures
+        run_mc_dropout_v2.py       # MC Dropout uncertainty analysis
+        run_feature_selection.py   # Feature ranking and G3 overlap
+
+run_backtesting_omole.py               # Long/short backtesting (Omole 2025 conditions)
+run_backtesting_mc_omole.py            # MC Dropout backtesting
+run_backtesting_dynamic_threshold.py   # Dynamic confidence threshold sweep (k=0..3)
 
 results/
-├── metrics/               # Per-fold JSON metrics for all experiments
-├── plots/                 # Publication-ready figures (PDF + PNG)
-├── tables/                # LaTeX tables for the paper
-├── shap/                  # SHAP importance values and plots
-├── statistical_tests/     # McNemar, Wilcoxon, Bonferroni results
-└── optuna/                # Hyperparameter optimisation results
+    optuna/            # Best params JSON + Optuna trial CSVs per model
+    backtesting/       # Backtesting records and summaries
+    mc_dropout/        # MC Dropout uncertainty records
+    attention/         # Cross-attention weight summaries
+    feature_selection/ # Feature ranking and G3 overlap analysis
+    statistical_tests/ # McNemar / Wilcoxon results
+    plots/             # All paper figures (PDF + PNG)
 ```
 
 ---
@@ -64,33 +104,26 @@ results/
 
 ### Feature Groups (Ablation Study)
 
-| Group | Features | Description |
+| Group | N features | Description |
 |---|---|---|
-| G0 | OHLCV (5) | Raw market data only — baseline |
-| G1 | OHLCV + Technical (15) | + RSI, Stochastic, Bollinger, OBV, etc. |
-| G2 | OHLCV + On-Chain (23) | + MVRV, SOPR, aSOPR, Realized Price, etc. |
-| G3 | All (33) | Full feature set |
+| G0 | 5 | OHLCV only — baseline |
+| G1 | 15 | OHLCV + Technical indicators (RSI, Stochastic, Bollinger, OBV, ...) |
+| G2 | 23 | OHLCV + On-chain metrics (MVRV, SOPR, aSOPR, Realized Price, ...) |
+| G3 | 33 | All features — used for all final model comparisons |
 
-### Walk-Forward Cross-Validation (7 folds, 2019–2025)
+### Walk-Forward Cross-Validation
 
 ```
-Train:  2013–2018  |  Test: 2019
-Train:  2013–2019  |  Test: 2020
-Train:  2013–2020  |  Test: 2021
-Train:  2013–2021  |  Test: 2022
-Train:  2013–2022  |  Test: 2023
-Train:  2013–2023  |  Test: 2024
-Train:  2013–2024  |  Test: 2025 (*)
+Train: 2013–2018  |  Test: 2019  (fold 1)
+Train: 2013–2019  |  Test: 2020  (fold 2)
+Train: 2013–2020  |  Test: 2021  (fold 3)
+Train: 2013–2021  |  Test: 2022  (fold 4)
+Train: 2013–2022  |  Test: 2023  (fold 5)
+Train: 2013–2023  |  Test: 2024  (fold 6)  <- last reported fold
+Train: 2013–2024  |  Test: 2025  (fold 7, out-of-distribution — reported separately)
 ```
-(*) 2025 exhibits a market regime change (Bitcoin spot ETF institutionalisation); reported separately.
 
-### Models
-
-- **Random Forest** — `class_weight="balanced"`, 500 estimators
-- **XGBoost** — `scale_pos_weight`, Optuna-optimised (300 trials, TPE+CMA-ES)
-- **LightGBM** — `scale_pos_weight`, Optuna-optimised (300 trials, TPE+CMA-ES)
-- **CNN-LSTM** — Two Conv1D + stacked LSTM, BCEWithLogitsLoss
-- **MLP Dual Encoder** *(proposed)* — Two MLP branches + bidirectional cross-attention
+Fold 7 (2025) exhibits near-random performance (DECA MCC=-0.09), consistent with a structural market regime change following Bitcoin spot ETF adoption.
 
 ---
 
@@ -99,19 +132,19 @@ Train:  2013–2024  |  Test: 2025 (*)
 ### Requirements
 
 - Python 3.13.3
-- PyTorch 2.11.0+cu128 (CUDA 12.8, requires NVIDIA GPU)
-- See `onchain_direction/requirements.txt` for all dependencies
+- PyTorch 2.11.0+cu128 (CUDA 12.8, tested on NVIDIA RTX 5060 Ti)
+- See `onchain_direction/requirements.txt` for all pinned dependencies
 
 ### Setup
 
 ```bash
 # 1. Create virtual environment
 python -m venv .venv
-.venv/Scripts/activate  # Windows
-# source .venv/bin/activate  # Linux/Mac
+.venv\Scripts\activate        # Windows
+# source .venv/bin/activate   # Linux/Mac
 
-# 2. Install PyTorch (CUDA 12.8)
-pip install torch torchvision --index-url https://download.pytorch.org/whl/cu128 --no-cache-dir
+# 2. Install PyTorch with CUDA 12.8
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu128
 
 # 3. Install remaining dependencies
 pip install -r onchain_direction/requirements.txt
@@ -120,54 +153,55 @@ pip install -r onchain_direction/requirements.txt
 ### Run Experiments
 
 ```bash
-# Full ablation study (RF, XGBoost, CNN-LSTM — ~60 min)
-python onchain_direction/experiments/run_ablation.py
+# Hyperparameter optimisation (results saved to results/optuna/)
+python onchain_direction/experiments/run_optuna_mlp.py          # DECA (~2h on GPU)
+python onchain_direction/experiments/run_optuna_svm.py          # SVM (~30 min)
+python onchain_direction/experiments/run_optuna_cnn_lstm.py     # CNN-LSTM (~1h on GPU)
 
-# MLP Dual Encoder experiment (~15 min)
-python onchain_direction/experiments/run_mlp_dual.py
+# Paper figures and statistical tests
+python onchain_direction/experiments/run_paper_plots.py
+python onchain_direction/experiments/run_paper_stats.py
+python onchain_direction/experiments/run_paper_shap.py
 
-# Hyperparameter optimisation — XGBoost (300 trials, ~90 min)
-python onchain_direction/experiments/run_optuna_xgb.py
+# MC Dropout uncertainty and attention interpretability
+python onchain_direction/experiments/run_mc_dropout_v2.py
+python onchain_direction/experiments/run_attention_analysis.py
+python onchain_direction/experiments/run_attention_plots.py
 
-# Hyperparameter optimisation — LightGBM (300 trials, ~90 min)
-python onchain_direction/experiments/run_optuna_lgbm.py
-
-# SHAP interpretability analysis
-python onchain_direction/experiments/run_shap.py
-
-# Statistical significance tests (McNemar, Wilcoxon, Bonferroni)
-python onchain_direction/experiments/run_stats.py
+# Backtesting
+python run_backtesting_omole.py
+python run_backtesting_mc_omole.py
+python run_backtesting_dynamic_threshold.py
 ```
 
-All results are saved to `results/`. Random seed is fixed at `42` across all experiments for full reproducibility.
+All results are saved to `results/`. Random seed fixed at `42` for reproducibility.
 
 ---
 
 ## Data
 
-The dataset covers **2013-01-03 to 2025-12-20** (4,735 daily observations).
+The dataset covers **2013-01-03 to 2025-12-20** (4,735 daily observations, 33 features).
 
 | Category | Features |
 |---|---|
-| OHLCV | Open, High, Low, Close, Volume |
-| Technical | RSI_14, Stoch_K/D, BB_PercentB, OBV, Dist_to_SMA200, ROI30d, Sharpe_30d, Drawdown_from_ATH, logret_1d |
-| On-Chain | MVRV, SOPR, aSOPR, RealizedPrice, Supply_in_Profit/Loss, UTXOs_in_Profit/Loss, NRPL, NUL, CapMVRVCur, Price_to_Realized, MVRV_z_365, ... |
+| OHLCV (5) | Open, High, Low, Close, Volume |
+| Technical (10) | RSI_14, Stoch_K/D, BB_PercentB, OBV, Dist_SMA200, ROI30d, Sharpe_30d, Drawdown_ATH, logret_1d |
+| On-Chain (18) | MVRV, SOPR, aSOPR, RealizedPrice, Supply_in_Profit/Loss, UTXOs_in_Profit/Loss, NRPL, NUL, CapMVRVCur, Price_to_Realized, MVRV_z_365, STH_SOPR, NVT, ... |
 
 **Target:** `y = 1` if `Close(t+1) > Close(t)`, else `y = 0`
 
-The enriched dataset (`data/dataset_enriched.csv`) includes additional features downloaded via free APIs (Fear & Greed Index, Hash Rate, NVT Ratio, Puell Multiple). The download script is provided in `onchain_direction/scripts/enrich_dataset.py`.
-
-> **Full dataset and trained models** are available on Zenodo: [DOI — to be added upon acceptance]
+> The dataset CSV is not versioned in this repository (large file).
+> Full dataset and trained model weights will be made available on Zenodo upon acceptance.
 
 ---
 
 ## Citation
 
 ```bibtex
-@article{onchain_direction_2026,
+@article{deca_bitcoin_2026,
   title   = {Predicting Bitcoin Daily Price Direction Using On-Chain Blockchain Metrics
-             and a Dual Encoder with Cross-Attention},
-  journal = {Information Fusion},
+             and a Dual-Encoder Cross-Attention Architecture},
+  journal = {Engineering Applications of Artificial Intelligence},
   year    = {2026},
   note    = {Under review}
 }
