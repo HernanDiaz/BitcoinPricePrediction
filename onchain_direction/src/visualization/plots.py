@@ -61,40 +61,121 @@ def _save(fig: plt.Figure, output_dir: Path, name: str) -> None:
 # ─────────────────────────────────────────────
 # Fig 1 — Walk-forward validation diagram
 # ─────────────────────────────────────────────
-def plot_walk_forward_diagram(folds: list, output_dir: Path) -> None:
-    fig, ax = plt.subplots(figsize=(10, 3.5))
+def plot_walk_forward_diagram(folds: list, output_dir: Path,
+                              df: pd.DataFrame = None) -> None:
+    # Elsevier specs: Arial 7 pt, double-column 190 mm = 7.48 in
+    FONT      = "Arial"
+    FS_LABEL  = 7    # axis labels / tick labels
+    FS_BAR    = 6    # text inside bars (min allowed)
+    FS_YTICK  = 7
+    COL2_IN   = 7.48
 
-    colors = {"train": "#4878CF", "test": "#E24A33"}
-    bar_height = 0.6
+    # Excluir Fold 7 (2025, out-of-distribution)
+    folds = [f for f in folds if f.fold != 7]
 
+    colors        = {"train": "#4878CF", "test": "#E24A33"}
+    bar_height    = 0.30          # barras estrechas
+    y_step        = 0.55          # separación entre filas (< 1 = más juntas)
+    dataset_start = folds[0].train_start
+    x_end_days    = (pd.Timestamp("2025-01-01") - dataset_start).days
+
+    # Posiciones Y: de arriba a abajo con paso y_step
+    y_positions = [(len(folds) - i) * y_step for i in range(len(folds))]
+
+    # ── Layout: barras arriba, precio Bitcoin abajo ────────────────────────
+    top_height = y_step * len(folds) + 0.3   # alto del panel de barras en unidades de datos
+    with_price = df is not None and "Close" in df.columns
+    if with_price:
+        fig, (ax, ax_price) = plt.subplots(
+            2, 1, figsize=(COL2_IN, 3.2),
+            gridspec_kw={"height_ratios": [2.2, 1.2], "hspace": 0.06},
+            sharex=True,
+        )
+    else:
+        fig, ax = plt.subplots(figsize=(COL2_IN, 2.0))
+        ax_price = None
+
+    # ── Barras de folds ────────────────────────────────────────────────────
     for i, fold in enumerate(folds):
-        y = len(folds) - i
+        y           = y_positions[i]
         train_start = fold.train_start
-        train_end = fold.train_end
-        test_start = fold.test_start
-        test_end = fold.test_end
-
-        train_width = (train_end - train_start).days
-        test_width = (test_end - test_start).days
-        origin = (train_start - folds[0].train_start).days
+        train_end   = fold.train_end
+        test_start  = fold.test_start
+        test_end    = fold.test_end
+        train_width = (train_end  - train_start).days
+        test_width  = (test_end   - test_start).days
+        origin      = (train_start - dataset_start).days
 
         ax.barh(y, train_width, left=origin, height=bar_height,
-                color=colors["train"], alpha=0.85, label="Train" if i == 0 else "")
+                color=colors["train"], alpha=0.25,
+                label="Training set" if i == 0 else "")
         ax.barh(y, test_width, left=origin + train_width, height=bar_height,
-                color=colors["test"], alpha=0.85, label="Test" if i == 0 else "")
-        ax.text(origin + train_width / 2, y, f"Train ({fold.train_end.year})",
-                ha="center", va="center", fontsize=8, color="white", fontweight="bold")
-        ax.text(origin + train_width + test_width / 2, y, f"Test {fold.test_start.year}",
-                ha="center", va="center", fontsize=8, color="white", fontweight="bold")
+                color=colors["test"], alpha=0.25,
+                label="Test set" if i == 0 else "")
 
-    ax.set_yticks(range(1, len(folds) + 1))
-    ax.set_yticklabels([f"Fold {f.fold}" for f in reversed(folds)])
-    ax.set_xlabel("Days from dataset start (2013-01-01)")
-    ax.set_title("Walk-Forward Expanding Window Cross-Validation")
-    ax.legend(loc="lower right")
-    ax.grid(axis="x", alpha=0.3)
+        # Etiqueta en barra de train: rango completo de años
+        train_label = f"{train_start.year}–{train_end.year}"
+        ax.text(origin + train_width / 2, y, train_label,
+                ha="center", va="center", fontsize=FS_BAR,
+                fontfamily=FONT, color="black", fontweight="bold")
 
-    _save(fig, output_dir, "fig1_walk_forward_diagram")
+        # Etiqueta en barra de test: solo el año de test
+        ax.text(origin + train_width + test_width / 2, y,
+                str(test_start.year),
+                ha="center", va="center", fontsize=FS_BAR,
+                fontfamily=FONT, color="black", fontweight="bold")
+
+    ax.set_yticks(y_positions)
+    ax.set_yticklabels([f"Fold {f.fold}" for f in folds],
+                       fontsize=FS_YTICK, fontfamily=FONT)
+    ax.legend(loc="upper right", fontsize=FS_LABEL,
+              framealpha=0.85, edgecolor="none")
+    ax.set_xlim(0, x_end_days)
+    margin = bar_height * 0.6
+    ax.set_ylim(min(y_positions) - margin, max(y_positions) + margin)
+    ax.tick_params(axis="both", labelsize=FS_LABEL)
+    ax.set_ylabel("Fold", fontsize=FS_LABEL, fontfamily=FONT)
+    ax.grid(axis="x", alpha=0.0)
+    for spine in ("top", "right"):
+        ax.spines[spine].set_visible(False)
+
+    # ── Precio Bitcoin ─────────────────────────────────────────────────────
+    if ax_price is not None:
+        price_data = df[df.index < pd.Timestamp("2025-01-01")]["Close"].dropna()
+        days = [(d - dataset_start).days for d in price_data.index]
+        ax_price.semilogy(days, price_data.values,
+                          color="#F7931A", lw=1.0, alpha=0.9)
+        ax_price.set_ylabel("BTC/USD (log)", fontsize=FS_LABEL, fontfamily=FONT)
+        ax_price.set_ylim(bottom=price_data.min() * 0.8)
+        ax_price.tick_params(axis="both", labelsize=FS_LABEL)
+        ax_price.grid(axis="y", ls=":", alpha=0.3)
+        ax_price.set_xlabel("Year", fontsize=FS_LABEL, fontfamily=FONT)
+        for spine in ("top", "right"):
+            ax_price.spines[spine].set_visible(False)
+
+    # ── Líneas verticales anuales + ticks ──────────────────────────────────
+    tick_positions, tick_labels = [], []
+    for yr in range(dataset_start.year, 2026):
+        d = (pd.Timestamp(f"{yr}-01-01") - dataset_start).days
+        if d > x_end_days:
+            break
+        tick_positions.append(d)
+        tick_labels.append(str(yr))
+        for a in ([ax, ax_price] if ax_price is not None else [ax]):
+            a.axvline(d, color="grey", lw=0.6, ls=":", zorder=0, alpha=0.55)
+
+    ax_bottom = ax_price if ax_price is not None else ax
+    ax_bottom.set_xticks(tick_positions)
+    ax_bottom.set_xticklabels(tick_labels, rotation=45, ha="right",
+                               fontsize=FS_LABEL, fontfamily=FONT)
+    if ax_price is None:
+        ax.set_xlabel("Year", fontsize=FS_LABEL, fontfamily=FONT)
+
+    fig.savefig(output_dir / "fig1_walk_forward_diagram.pdf",
+                dpi=1000, bbox_inches="tight")
+    fig.savefig(output_dir / "fig1_walk_forward_diagram.png",
+                dpi=300, bbox_inches="tight")
+    plt.close(fig)
 
 
 # ─────────────────────────────────────────────

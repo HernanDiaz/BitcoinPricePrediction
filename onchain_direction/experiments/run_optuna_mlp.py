@@ -184,6 +184,12 @@ log.info(f"  Acc={summary['accuracy_mean']:.4f}  MCC={summary['mcc_mean']:.4f}  
 log.info(f"RESULTADO (folds 1-6, 2019-2024):")
 log.info(f"  Acc={summary_stable['accuracy_mean']:.4f}  MCC={summary_stable['mcc_mean']:.4f}  AUC={summary_stable['roc_auc_mean']:.4f}")
 
+# Guardar pesos del mejor modelo (ultimo fold = train 2013-2024, maximo de datos)
+models_dir = ROOT / "results" / "models"
+models_dir.mkdir(parents=True, exist_ok=True)
+model.save(models_dir / "deca_v2_best.pt")
+log.info(f"Pesos del mejor modelo guardados → results/models/deca_v2_best.pt")
+
 out = {
     "experiment_id"  : "MLPDualEncoderV2_G3_Optuna",
     "best_params"    : best.params,

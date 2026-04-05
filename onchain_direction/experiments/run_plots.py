@@ -195,7 +195,7 @@ def main():
 
     # ── Fig 1: Walk-forward diagram ────────────────────────────────
     logger.info("\n[Fig 1] Walk-forward diagram")
-    plot_walk_forward_diagram(list(cv), plots_dir)
+    plot_walk_forward_diagram(list(cv), plots_dir, df=df)
 
     # ── Fig 2: Dataset overview ────────────────────────────────────
     logger.info("[Fig 2] Dataset overview")

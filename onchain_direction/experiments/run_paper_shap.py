@@ -21,6 +21,23 @@ import pandas as pd
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+
+# ── Elsevier figure style ──────────────────────────────────────────────────
+plt.rcParams.update({
+    "font.family":      "sans-serif",
+    "font.sans-serif":  ["Arial", "Helvetica", "DejaVu Sans"],
+    "font.size":        9,
+    "axes.labelsize":   9,
+    "xtick.labelsize":  8,
+    "ytick.labelsize":  8,
+    "legend.fontsize":  8,
+    "legend.framealpha": 0.85,
+    "axes.spines.top":  False,
+    "axes.spines.right": False,
+})
+COL1 = 3.54   # single column 90 mm
+COL2 = 7.48   # double column 190 mm
+
 import shap
 
 ROOT = Path(__file__).parents[2]
@@ -47,11 +64,13 @@ target_col = config["data"]["target_column"]
 seed       = config["project"]["random_seed"]
 feat_cols  = [c for c in FEATURE_GROUPS["G3"].features if c in df.columns]
 
-RESULTS_DIR = ROOT / "results" / "optuna"
-SHAP_DIR    = ROOT / "results" / "shap"
-PLOTS_DIR   = ROOT / "results" / "plots"
+RESULTS_DIR  = ROOT / "results" / "optuna"
+SHAP_DIR     = ROOT / "results" / "shap"
+PLOTS_DIR    = ROOT / "results" / "plots"
+PAPER_FIGS   = ROOT / "paper" / "EAAI" / "figures"
 SHAP_DIR.mkdir(parents=True, exist_ok=True)
 PLOTS_DIR.mkdir(parents=True, exist_ok=True)
+PAPER_FIGS.mkdir(parents=True, exist_ok=True)
 
 # ── Load best XGBoost params ──────────────────────────────────────────────────
 xgb_json    = json.load(open(RESULTS_DIR / "xgboost_g3_optuna_final.json"))
@@ -107,8 +126,8 @@ log.info(f"\nTop 10 features by SHAP:")
 for _, row in importance_df.head(10).iterrows():
     log.info(f"  {row['feature']:40s}  {row['mean_abs_shap']:.4f}")
 
-# ── Plot 1: Bar chart (top 20 features) ──────────────────────────────────────
-top_n = 20
+# ── Plot 1: Bar chart (top 10 features) ──────────────────────────────────────
+top_n = 10
 top_df = importance_df.head(top_n)
 
 # Color by domain (technical vs on-chain)
@@ -118,32 +137,38 @@ tech_cols, onchain_cols = get_dual_encoder_splits(df)
 colors = []
 for feat in top_df["feature"]:
     if feat in tech_cols:
-        colors.append("#2196F3")   # blue = technical
+        colors.append("#7EB6D4")   # muted blue = technical
     else:
-        colors.append("#FF9800")   # orange = on-chain
+        colors.append("#E8A87C")   # muted orange = on-chain
 
-fig, ax = plt.subplots(figsize=(10, 8))
+fig, ax = plt.subplots(figsize=(COL1 * 0.8, top_n * 0.22 + 0.6))
 bars = ax.barh(range(top_n), top_df["mean_abs_shap"].values[::-1],
                color=colors[::-1], edgecolor="white", linewidth=0.5)
+# Shorten feature names: underscores → spaces, max 22 chars
+def shorten(name, maxlen=22):
+    s = name.replace("_", " ")
+    return s if len(s) <= maxlen else s[:maxlen-1] + "…"
+
+short_labels = [shorten(f) for f in top_df["feature"].values[::-1]]
 ax.set_yticks(range(top_n))
-ax.set_yticklabels(top_df["feature"].values[::-1], fontsize=9)
-ax.set_xlabel("Mean |SHAP value|", fontsize=11)
-ax.set_title(f"Top {top_n} Features by SHAP Importance\n(XGBoost G3, folds 1–6 concatenated)",
-             fontsize=12)
+ax.set_yticklabels(short_labels, fontsize=7)
+ax.set_xlabel("Mean |SHAP value|", fontsize=8)
+ax.tick_params(axis="x", labelsize=7)
 
 # Legend
 from matplotlib.patches import Patch
 legend_elements = [
-    Patch(facecolor="#FF9800", label="On-chain"),
-    Patch(facecolor="#2196F3", label="Technical"),
+    Patch(facecolor="#E8A87C", label="On-chain"),
+    Patch(facecolor="#7EB6D4", label="Technical"),
 ]
-ax.legend(handles=legend_elements, loc="lower right", fontsize=10)
+ax.legend(handles=legend_elements, loc="lower right")
 ax.grid(axis="x", alpha=0.3)
 plt.tight_layout()
 fig.savefig(PLOTS_DIR / "shap_bar_top20.pdf", bbox_inches="tight")
 fig.savefig(PLOTS_DIR / "shap_bar_top20.png", dpi=300, bbox_inches="tight")
+import shutil; shutil.copy(PLOTS_DIR / "shap_bar_top20.pdf", PAPER_FIGS / "shap_importance_bar.pdf")
 plt.close(fig)
-log.info(f"Saved: shap_bar_top20.pdf/.png")
+log.info(f"Saved: shap_bar_top20.pdf/.png → paper/EAAI/figures/shap_importance_bar.pdf")
 
 # ── Plot 2: Beeswarm (SHAP summary plot) ─────────────────────────────────────
 # Use only top-20 features for readability
@@ -152,7 +177,7 @@ shap_top = shap_matrix[:, top_idx]
 X_top    = X_all[:, top_idx]
 feat_top = top_df["feature"].tolist()
 
-fig, ax = plt.subplots(figsize=(10, 8))
+fig, ax = plt.subplots(figsize=(COL2, 4.2))
 shap.summary_plot(
     shap_top, X_top,
     feature_names=feat_top,
