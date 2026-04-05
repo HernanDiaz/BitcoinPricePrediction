@@ -1,0 +1,33 @@
+{
+  "global": {
+    "mean_conc_to": 0.2641927487088671,
+    "std_conc_to": 0.15857012511224106,
+    "mean_conc_ot": 0.37040656536602323,
+    "std_conc_ot": 0.25757669933643645
+  },
+  "correct_vs_wrong": {
+    "correct_mean_to": 0.2621469126496938,
+    "wrong_mean_to": 0.2743661841529849,
+    "ttest_to_pvalue": 0.17813743275378746,
+    "ttest_to_stat": -1.3469446093661006,
+    "correct_mean_ot": 0.37449012449853597,
+    "wrong_mean_ot": 0.3501000383446726,
+    "ttest_ot_pvalue": 0.0979701589597926,
+    "ttest_ot_stat": 1.6554814097048278
+  },
+  "up_vs_down": {
+    "up_mean_to": 0.2802245010176118,
+    "down_mean_to": 0.24653169079635734,
+    "ttest_to_pvalue": 6.377656443362643e-07,
+    "ttest_to_stat": 4.994115537577556,
+    "up_mean_ot": 0.3590959681043414,
+    "down_mean_ot": 0.38286665765142347,
+    "ttest_ot_pvalue": 0.030947651228587215,
+    "ttest_ot_stat": -2.159139165890918
+  },
+  "n_correct": 1825,
+  "n_wrong": 367,
+  "n_pred_up": 1149,
+  "n_pred_down": 1043,
+  "K": 4
+}

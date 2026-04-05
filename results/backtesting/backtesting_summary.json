@@ -1,0 +1,56 @@
+{
+  "Buy&Hold": {
+    "total_roi": 2353.16,
+    "annual_roi": 70.38,
+    "sharpe": 1.146,
+    "max_dd": -76.48,
+    "win_rate": 52.3,
+    "n_trades": 1,
+    "final_cap": 245316.28
+  },
+  "XGBoost": {
+    "total_roi": 54835333035.92,
+    "annual_roi": 2752.21,
+    "sharpe": 8.306,
+    "max_dd": -11.72,
+    "win_rate": 81.97,
+    "n_trades": 487,
+    "final_cap": 5483533313591.99
+  },
+  "LightGBM": {
+    "total_roi": 65684352969.55,
+    "annual_roi": 2839.25,
+    "sharpe": 8.297,
+    "max_dd": -11.72,
+    "win_rate": 79.26,
+    "n_trades": 498,
+    "final_cap": 6568435306954.64
+  },
+  "SVM": {
+    "total_roi": 915787181405.36,
+    "annual_roi": 4458.1,
+    "sharpe": 9.495,
+    "max_dd": -4.71,
+    "win_rate": 84.33,
+    "n_trades": 505,
+    "final_cap": 91578718150536.16
+  },
+  "CNN-LSTM": {
+    "total_roi": 31.82,
+    "annual_roi": 4.71,
+    "sharpe": 0.649,
+    "max_dd": -80.73,
+    "win_rate": 51.49,
+    "n_trades": 435,
+    "final_cap": 13181.67
+  },
+  "DECA": {
+    "total_roi": 943293340847.61,
+    "annual_roi": 4480.62,
+    "sharpe": 9.497,
+    "max_dd": -4.71,
+    "win_rate": 83.24,
+    "n_trades": 496,
+    "final_cap": 94329334094761.31
+  }
+}

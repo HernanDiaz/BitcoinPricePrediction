@@ -1,0 +1,368 @@
+{
+  "description": "Dynamic threshold: LONG if p > 0.5+k*\u03c3, SHORT if p < 0.5-k*\u03c3, else CASH",
+  "parameters": {
+    "commission": 0.005,
+    "tax_rate": 0.3,
+    "initial_cap": 1000.0,
+    "test_period": "2019-01-01 \u2192 2024-12-31",
+    "n_days": 2192
+  },
+  "baselines": {
+    "Det-100%": {
+      "annual_ror": 3844.44,
+      "sharpe": 14.578,
+      "max_dd": -10.18,
+      "win_rate": 83.25,
+      "final_cap": 3842902336598.4,
+      "n_long": 1149,
+      "n_short": 1043,
+      "n_cash": 0,
+      "coverage": 100.0
+    },
+    "MC-100%": {
+      "annual_ror": 3851.23,
+      "sharpe": 14.704,
+      "max_dd": -9.79,
+      "win_rate": 83.93,
+      "final_cap": 3882776397196.32,
+      "n_long": 1136,
+      "n_short": 1056,
+      "n_cash": 0,
+      "coverage": 100.0
+    }
+  },
+  "sweep": {
+    "0.0": {
+      "annual_ror": 3851.23,
+      "sharpe": 14.704,
+      "max_dd": -9.79,
+      "win_rate": 83.93,
+      "final_cap": 3882776397196.32,
+      "n_long": 1136,
+      "n_short": 1056,
+      "n_cash": 0,
+      "coverage": 100.0
+    },
+    "0.1": {
+      "annual_ror": 3893.3,
+      "sharpe": 14.759,
+      "max_dd": -9.79,
+      "win_rate": 84.4,
+      "final_cap": 4137760348842.35,
+      "n_long": 1126,
+      "n_short": 1042,
+      "n_cash": 24,
+      "coverage": 98.9
+    },
+    "0.2": {
+      "annual_ror": 3893.08,
+      "sharpe": 14.759,
+      "max_dd": -9.79,
+      "win_rate": 85.01,
+      "final_cap": 4136390170635.7,
+      "n_long": 1107,
+      "n_short": 1022,
+      "n_cash": 63,
+      "coverage": 97.1
+    },
+    "0.30000000000000004": {
+      "annual_ror": 3918.1,
+      "sharpe": 14.75,
+      "max_dd": -9.79,
+      "win_rate": 85.35,
+      "final_cap": 4294539080866.49,
+      "n_long": 1093,
+      "n_short": 1011,
+      "n_cash": 88,
+      "coverage": 96.0
+    },
+    "0.4": {
+      "annual_ror": 3915.07,
+      "sharpe": 14.746,
+      "max_dd": -9.79,
+      "win_rate": 85.66,
+      "final_cap": 4275093620433.04,
+      "n_long": 1078,
+      "n_short": 1001,
+      "n_cash": 113,
+      "coverage": 94.8
+    },
+    "0.5": {
+      "annual_ror": 3949.67,
+      "sharpe": 14.794,
+      "max_dd": -9.79,
+      "win_rate": 86.15,
+      "final_cap": 4501157948084.36,
+      "n_long": 1064,
+      "n_short": 995,
+      "n_cash": 133,
+      "coverage": 93.9
+    },
+    "0.6000000000000001": {
+      "annual_ror": 3966.7,
+      "sharpe": 14.827,
+      "max_dd": -8.83,
+      "win_rate": 86.58,
+      "final_cap": 4616050154867.36,
+      "n_long": 1049,
+      "n_short": 979,
+      "n_cash": 164,
+      "coverage": 92.5
+    },
+    "0.7000000000000001": {
+      "annual_ror": 3978.8,
+      "sharpe": 14.827,
+      "max_dd": -8.83,
+      "win_rate": 86.85,
+      "final_cap": 4699174650780.34,
+      "n_long": 1044,
+      "n_short": 965,
+      "n_cash": 183,
+      "coverage": 91.7
+    },
+    "0.8": {
+      "annual_ror": 3998.73,
+      "sharpe": 14.881,
+      "max_dd": -8.83,
+      "win_rate": 87.32,
+      "final_cap": 4838762955731.16,
+      "n_long": 1031,
+      "n_short": 957,
+      "n_cash": 204,
+      "coverage": 90.7
+    },
+    "0.9": {
+      "annual_ror": 3988.26,
+      "sharpe": 14.865,
+      "max_dd": -8.83,
+      "win_rate": 87.71,
+      "final_cap": 4764982660574.8,
+      "n_long": 1014,
+      "n_short": 948,
+      "n_cash": 230,
+      "coverage": 89.5
+    },
+    "1.0": {
+      "annual_ror": 4013.24,
+      "sharpe": 14.862,
+      "max_dd": -8.83,
+      "win_rate": 87.95,
+      "final_cap": 4942528488985.13,
+      "n_long": 1004,
+      "n_short": 939,
+      "n_cash": 249,
+      "coverage": 88.6
+    },
+    "1.25": {
+      "annual_ror": 3980.67,
+      "sharpe": 14.812,
+      "max_dd": -8.83,
+      "win_rate": 88.66,
+      "final_cap": 4712093060704.13,
+      "n_long": 979,
+      "n_short": 918,
+      "n_cash": 295,
+      "coverage": 86.5
+    },
+    "1.5": {
+      "annual_ror": 3992.33,
+      "sharpe": 14.813,
+      "max_dd": -8.43,
+      "win_rate": 89.58,
+      "final_cap": 4793514041636.17,
+      "n_long": 957,
+      "n_short": 887,
+      "n_cash": 348,
+      "coverage": 84.1
+    },
+    "1.75": {
+      "annual_ror": 3979.36,
+      "sharpe": 14.778,
+      "max_dd": -8.43,
+      "win_rate": 90.41,
+      "final_cap": 4703057948872.12,
+      "n_long": 934,
+      "n_short": 861,
+      "n_cash": 397,
+      "coverage": 81.9
+    },
+    "2.0": {
+      "annual_ror": 3985.19,
+      "sharpe": 14.74,
+      "max_dd": -8.43,
+      "win_rate": 90.9,
+      "final_cap": 4743538425122.49,
+      "n_long": 915,
+      "n_short": 845,
+      "n_cash": 432,
+      "coverage": 80.3
+    },
+    "2.25": {
+      "annual_ror": 3953.46,
+      "sharpe": 14.673,
+      "max_dd": -8.43,
+      "win_rate": 91.3,
+      "final_cap": 4526542038550.94,
+      "n_long": 895,
+      "n_short": 830,
+      "n_cash": 467,
+      "coverage": 78.7
+    },
+    "2.5": {
+      "annual_ror": 3916.22,
+      "sharpe": 14.622,
+      "max_dd": -8.43,
+      "win_rate": 91.93,
+      "final_cap": 4282462022846.78,
+      "n_long": 875,
+      "n_short": 811,
+      "n_cash": 506,
+      "coverage": 76.9
+    },
+    "2.75": {
+      "annual_ror": 3841.26,
+      "sharpe": 14.508,
+      "max_dd": -8.43,
+      "win_rate": 92.15,
+      "final_cap": 3824290484112.2,
+      "n_long": 857,
+      "n_short": 801,
+      "n_cash": 534,
+      "coverage": 75.6
+    },
+    "3.0": {
+      "annual_ror": 3682.93,
+      "sharpe": 14.341,
+      "max_dd": -8.43,
+      "win_rate": 92.18,
+      "final_cap": 2989610585968.81,
+      "n_long": 841,
+      "n_short": 784,
+      "n_cash": 567,
+      "coverage": 74.1
+    },
+    "3.5": {
+      "annual_ror": 3589.73,
+      "sharpe": 14.208,
+      "max_dd": -8.43,
+      "win_rate": 92.92,
+      "final_cap": 2573694649394.18,
+      "n_long": 811,
+      "n_short": 757,
+      "n_cash": 624,
+      "coverage": 71.5
+    },
+    "4.0": {
+      "annual_ror": 3608.4,
+      "sharpe": 14.141,
+      "max_dd": -8.04,
+      "win_rate": 93.31,
+      "final_cap": 2652873034017.26,
+      "n_long": 790,
+      "n_short": 734,
+      "n_cash": 668,
+      "coverage": 69.5
+    },
+    "4.5": {
+      "annual_ror": 3542.48,
+      "sharpe": 14.036,
+      "max_dd": -8.04,
+      "win_rate": 93.87,
+      "final_cap": 2381988703242.52,
+      "n_long": 772,
+      "n_short": 713,
+      "n_cash": 707,
+      "coverage": 67.7
+    },
+    "5.0": {
+      "annual_ror": 3487.24,
+      "sharpe": 13.921,
+      "max_dd": -8.04,
+      "win_rate": 94.23,
+      "final_cap": 2173099903247.44,
+      "n_long": 750,
+      "n_short": 688,
+      "n_cash": 754,
+      "coverage": 65.6
+    },
+    "5.5": {
+      "annual_ror": 3373.91,
+      "sharpe": 13.688,
+      "max_dd": -8.04,
+      "win_rate": 94.44,
+      "final_cap": 1792057862113.7,
+      "n_long": 723,
+      "n_short": 662,
+      "n_cash": 807,
+      "coverage": 63.2
+    },
+    "6.0": {
+      "annual_ror": 3285.87,
+      "sharpe": 13.511,
+      "max_dd": -8.04,
+      "win_rate": 94.77,
+      "final_cap": 1536030067970.0,
+      "n_long": 704,
+      "n_short": 634,
+      "n_cash": 854,
+      "coverage": 61.0
+    },
+    "7.0": {
+      "annual_ror": 3076.11,
+      "sharpe": 13.22,
+      "max_dd": -7.82,
+      "win_rate": 95.49,
+      "final_cap": 1046176962932.7,
+      "n_long": 674,
+      "n_short": 590,
+      "n_cash": 928,
+      "coverage": 57.7
+    },
+    "8.0": {
+      "annual_ror": 2880.56,
+      "sharpe": 12.963,
+      "max_dd": -7.82,
+      "win_rate": 96.15,
+      "final_cap": 714274880141.09,
+      "n_long": 649,
+      "n_short": 546,
+      "n_cash": 997,
+      "coverage": 54.5
+    },
+    "9.0": {
+      "annual_ror": 2587.21,
+      "sharpe": 12.555,
+      "max_dd": -8.33,
+      "win_rate": 96.19,
+      "final_cap": 383386630634.55,
+      "n_long": 608,
+      "n_short": 522,
+      "n_cash": 1062,
+      "coverage": 51.6
+    },
+    "10.0": {
+      "annual_ror": 2302.81,
+      "sharpe": 12.209,
+      "max_dd": -8.33,
+      "win_rate": 96.59,
+      "final_cap": 195829532609.39,
+      "n_long": 569,
+      "n_short": 486,
+      "n_cash": 1137,
+      "coverage": 48.1
+    },
+    "11.0": {
+      "annual_ror": 2039.63,
+      "sharpe": 11.822,
+      "max_dd": -8.33,
+      "win_rate": 96.86,
+      "final_cap": 97570681046.68,
+      "n_long": 520,
+      "n_short": 467,
+      "n_cash": 1205,
+      "coverage": 45.0
+    }
+  },
+  "best_k_ror": 1.0,
+  "best_k_sharpe": 0.8
+}

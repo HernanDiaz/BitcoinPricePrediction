@@ -1,0 +1,72 @@
+{
+  "Buy&Hold": {
+    "annual_roi": 70.4,
+    "total_roi": 2353.2,
+    "sharpe": 1.146,
+    "max_dd": -76.48,
+    "win_rate": 52.3,
+    "coverage": 100.0,
+    "active_pct": 100.0,
+    "n_long_days": 2192
+  },
+  "Det-100%": {
+    "annual_roi": 4644.0,
+    "total_roi": 1164280947231.4,
+    "sharpe": 9.577,
+    "max_dd": -4.31,
+    "win_rate": 83.9,
+    "coverage": 100.0,
+    "active_pct": 52.4,
+    "n_long_days": 1149
+  },
+  "MC-100%": {
+    "annual_roi": 4729.8,
+    "total_roi": 1296631062481.0,
+    "sharpe": 9.661,
+    "max_dd": -4.21,
+    "win_rate": 84.95,
+    "coverage": 100.0,
+    "active_pct": 51.8,
+    "n_long_days": 1136
+  },
+  "MC-90%": {
+    "annual_roi": 4512.1,
+    "total_roi": 982843993237.2,
+    "sharpe": 9.613,
+    "max_dd": -4.71,
+    "win_rate": 88.67,
+    "coverage": 90.0,
+    "active_pct": 46.3,
+    "n_long_days": 1015
+  },
+  "MC-75%": {
+    "annual_roi": 3916.8,
+    "total_roi": 428628313026.0,
+    "sharpe": 9.362,
+    "max_dd": -4.41,
+    "win_rate": 92.49,
+    "coverage": 75.0,
+    "active_pct": 38.9,
+    "n_long_days": 852
+  },
+  "MC-50%": {
+    "annual_roi": 2566.0,
+    "total_roi": 36556794880.5,
+    "sharpe": 8.436,
+    "max_dd": -1.86,
+    "win_rate": 95.99,
+    "coverage": 50.0,
+    "active_pct": 27.3,
+    "n_long_days": 599
+  },
+  "MC-25%": {
+    "annual_roi": 543.3,
+    "total_roi": 7161787.0,
+    "sharpe": 5.796,
+    "max_dd": -1.96,
+    "win_rate": 98.5,
+    "coverage": 25.0,
+    "active_pct": 12.2,
+    "n_long_days": 267
+  }
+}

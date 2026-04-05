@@ -1,0 +1,16 @@
+{
+  "baseline_accuracy": 0.8325729927007299,
+  "mc_samples": 30,
+  "mean_uncertainty": 0.0564281143567586,
+  "std_uncertainty": 0.044064638456834684,
+  "correct_mean_uncertainty": 0.04792457077703247,
+  "wrong_mean_uncertainty": 0.09871412807065558,
+  "ttest_pvalue": 1.5996007405536668e-99,
+  "ttest_stat": -22.310118202557124,
+  "acc_top90pct_confidence": 0.8691683569979716,
+  "acc_top75pct_confidence": 0.9142335766423357,
+  "acc_top50pct_confidence": 0.9635036496350365,
+  "coverage_90pct": 0.9,
+  "coverage_75pct": 0.75,
+  "coverage_50pct": 0.5
+}

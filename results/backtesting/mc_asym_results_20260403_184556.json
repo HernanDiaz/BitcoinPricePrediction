@@ -1,0 +1,118 @@
+{
+  "description": "Asymmetric uncertainty filter backtesting (Omole 2025 conditions)",
+  "strategy": "Asymmetric MC Dropout: low-\u03c3 \u2192 long/short; high-\u03c3+UP \u2192 long; high-\u03c3+DOWN \u2192 cash",
+  "parameters": {
+    "commission": 0.005,
+    "tax_rate": 0.3,
+    "initial_cap": 1000.0,
+    "test_period": "2019-01-01 \u2192 2024-12-31",
+    "n_days": 2192,
+    "coverages": [
+      75,
+      50,
+      25
+    ]
+  },
+  "results": {
+    "Buy&Hold": {
+      "annual_ror": 70.38,
+      "sharpe": 1.146,
+      "max_dd": -76.48,
+      "win_rate": 52.3,
+      "final_cap": 24531.63,
+      "n_long": 2191,
+      "n_short": 0,
+      "n_cash": 0
+    },
+    "SVM": {
+      "annual_ror": 3790.3,
+      "sharpe": 14.298,
+      "max_dd": -11.09,
+      "win_rate": 82.7,
+      "final_cap": 3536782064971.56,
+      "n_long": 1117,
+      "n_short": 1075,
+      "n_cash": 0
+    },
+    "Det-100%": {
+      "annual_ror": 3844.44,
+      "sharpe": 14.578,
+      "max_dd": -10.18,
+      "win_rate": 83.25,
+      "final_cap": 3842902336598.4,
+      "n_long": 1149,
+      "n_short": 1043,
+      "n_cash": 0
+    },
+    "MC-100%": {
+      "annual_ror": 3851.23,
+      "sharpe": 14.704,
+      "max_dd": -9.79,
+      "win_rate": 83.93,
+      "final_cap": 3882776397196.32,
+      "n_long": 1136,
+      "n_short": 1056,
+      "n_cash": 0
+    },
+    "MC-Sym-75%": {
+      "annual_ror": 3502.25,
+      "sharpe": 14.28,
+      "max_dd": -8.43,
+      "win_rate": 91.36,
+      "final_cap": 2228307674099.0,
+      "n_long": 852,
+      "n_short": 792,
+      "n_cash": 548
+    },
+    "MC-Asym-75%": {
+      "annual_ror": 3908.29,
+      "sharpe": 14.592,
+      "max_dd": -9.79,
+      "win_rate": 87.09,
+      "final_cap": 4231914796895.67,
+      "n_long": 1136,
+      "n_short": 792,
+      "n_cash": 264
+    },
+    "MC-Sym-50%": {
+      "annual_ror": 2541.65,
+      "sharpe": 12.386,
+      "max_dd": -8.33,
+      "win_rate": 96.35,
+      "final_cap": 345974920464.21,
+      "n_long": 599,
+      "n_short": 497,
+      "n_cash": 1096
+    },
+    "MC-Asym-50%": {
+      "annual_ror": 3386.34,
+      "sharpe": 13.593,
+      "max_dd": -9.38,
+      "win_rate": 88.55,
+      "final_cap": 1830935992251.49,
+      "n_long": 1136,
+      "n_short": 497,
+      "n_cash": 559
+    },
+    "MC-Sym-25%": {
+      "annual_ror": 744.55,
+      "sharpe": 8.567,
+      "max_dd": -8.33,
+      "win_rate": 97.99,
+      "final_cap": 367136464.16,
+      "n_long": 267,
+      "n_short": 281,
+      "n_cash": 1644
+    },
+    "MC-Asym-25%": {
+      "annual_ror": 2305.05,
+      "sharpe": 12.052,
+      "max_dd": -9.38,
+      "win_rate": 87.44,
+      "final_cap": 196930983517.72,
+      "n_long": 1136,
+      "n_short": 281,
+      "n_cash": 775
+    }
+  }
+}
