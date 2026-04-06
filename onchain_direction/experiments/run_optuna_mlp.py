@@ -35,7 +35,7 @@ with open(ROOT / "onchain_direction" / "config.yaml") as f:
 
 # Use original dataset (33 features) for MLP — enriched dataset has too many NaN
 # in early folds (FearGreed starts 2018, training starts 2013)
-config["paths"]["dataset"] = "dataset_COMPLETO_con_OHLCV_20251221_014211.csv"
+config["paths"]["dataset"] = "data/bitcoin_onchain_2013_2025.csv"
 
 from src.data.loader import impute_missing
 df         = impute_missing(load_dataset(config))

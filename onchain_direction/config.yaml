@@ -4,7 +4,7 @@ project:
   device: "cuda"  # "cuda" or "cpu"
 
 paths:
-  dataset: "dataset_COMPLETO_enriched.csv"
+  dataset: "bitcoin_onchain_2013_2025.csv"
   results: "../results"
 
 data:

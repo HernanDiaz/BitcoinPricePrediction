@@ -32,7 +32,7 @@ logging.basicConfig(level=logging.INFO,
 log = logging.getLogger(__name__)
 
 ROOT         = Path(__file__).parents[2]
-ORIGINAL_CSV = ROOT / "dataset_COMPLETO_con_OHLCV_20251221_014211.csv"
+ORIGINAL_CSV = ROOT / "data/bitcoin_onchain_2013_2025.csv"
 OUTPUT_CSV   = ROOT / "dataset_COMPLETO_enriched.csv"
 
 # ---------------------------------------------------------------------------

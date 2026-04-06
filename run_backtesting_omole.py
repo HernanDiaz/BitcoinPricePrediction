@@ -76,7 +76,7 @@ MODEL_FILES = {
 
 # ── load dataset ──────────────────────────────────────────────────────────────
 log.info("Loading dataset …")
-DATASET_FILE = "dataset_COMPLETO_con_OHLCV_20251221_014211.csv"
+DATASET_FILE = "data/bitcoin_onchain_2013_2025.csv"
 dataset_path = ROOT / DATASET_FILE
 df = pd.read_csv(dataset_path, parse_dates=["Date"])
 df = df.set_index("Date").ffill().bfill()

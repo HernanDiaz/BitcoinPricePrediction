@@ -57,7 +57,7 @@ log = logging.getLogger("mc_dropout_v2")
 # ── Config ────────────────────────────────────────────────────────────────────
 with open(ROOT / "onchain_direction" / "config.yaml") as f:
     config = yaml.safe_load(f)
-config["paths"]["dataset"] = "dataset_COMPLETO_con_OHLCV_20251221_014211.csv"
+config["paths"]["dataset"] = "data/bitcoin_onchain_2013_2025.csv"
 
 df         = impute_missing(load_dataset(config))
 cv         = WalkForwardCV(config)

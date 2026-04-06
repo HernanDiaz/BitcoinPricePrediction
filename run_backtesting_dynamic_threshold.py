@@ -68,7 +68,7 @@ with open(ROOT / "onchain_direction" / "config.yaml") as f:
     config = yaml.safe_load(f)
 
 log.info("Loading dataset …")
-df = pd.read_csv(ROOT / "dataset_COMPLETO_con_OHLCV_20251221_014211.csv",
+df = pd.read_csv(ROOT / "data/bitcoin_onchain_2013_2025.csv",
                  parse_dates=["Date"])
 df = df.set_index("Date").ffill().bfill()
 
