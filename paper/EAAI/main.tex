@@ -60,6 +60,9 @@
 \author[a,b]{Author Two}
 \ead{author2@university.edu}
 
+\author[a]{Author Three}
+\ead{author3@university.edu}
+
 \cortext[cor1]{Corresponding author}
 
 \address[a]{Department of Computer Science, University Name, City, Country}
@@ -111,9 +114,9 @@ decisions and improved investment outcomes.
 \end{highlights}
 
 \begin{keyword}
-Bitcoin \sep price direction prediction \sep walk-forward cross-validation \sep
-dual-encoder architecture \sep cross-attention \sep on-chain metrics \sep
-Monte Carlo Dropout \sep uncertainty quantification \sep backtesting \sep SHAP
+Bitcoin \sep price direction prediction \sep dual-encoder cross-attention \sep
+on-chain metrics \sep walk-forward cross-validation \sep
+Monte Carlo Dropout \sep uncertainty quantification
 \end{keyword}
 
 \end{frontmatter}
@@ -135,7 +138,7 @@ decisions while remaining less sensitive to magnitude errors.
 
 A substantial body of research has addressed this problem over the past
 decade, achieving self-reported accuracies in the range of 75--83\%
-\citep{mcnally2018predicting, omole2024financial, omole2025eaai}.
+\citep{mcnally2018predicting, omole2024financial, omole2025eaai, dubey2025bitcoin}.
 However, the majority of these results are obtained on a single 80/20
 train-test split, a protocol known to produce optimistically biased
 estimates when applied to time-series data
@@ -234,7 +237,7 @@ returns, and \citet{abraham2018crypto} showed that Reddit discussion
 volume correlates with short-term volatility spikes.
 Hybrid models that concatenate sentiment embeddings with price-derived
 features have been shown to improve directional accuracy over price-only
-baselines \citep{li2020hybrid}, though the gains tend to degrade
+baselines \citep{valencia2019sentiment}, though the gains tend to degrade
 during periods of abnormally high posting volume such as market crashes.
 
 Several studies have designed architectures specifically for
@@ -270,7 +273,12 @@ comparably or worse.
 Crucially, technical indicators alone yielded only 50--53\% accuracy
 (near-random), corroborating the finding replicated by our G1
 ablation.
-Our work extends both studies by (a) evaluating under walk-forward CV
+More recently, \citet{dubey2025bitcoin} revisited the same on-chain
+prediction task with Boruta, L1, and PCA feature selection paired with
+CNN-LSTM and TCN models, reporting 82.03\% accuracy with Boruta +
+CNN-LSTM on a single holdout split and an annualised return of
+1{,}682.7\%.
+Our work extends these studies by (a) evaluating under walk-forward CV
 rather than simple splits, (b) introducing an architecture that
 explicitly models the interaction between technical and on-chain domains,
 and (c) providing uncertainty quantification applicable to risk-controlled
@@ -289,17 +297,17 @@ interpretable signals.
 MVRV (Market Value to Realised Value) compares market capitalisation with
 the aggregate cost basis of all circulating coins; values below 1.0
 historically correspond to accumulation phases that have preceded major
-bull markets \citep{glassnode2020mvrv}.
+bull markets \citep{puell2018mvrv}.
 SOPR (Spent Output Profit Ratio) measures the ratio of the USD value of
 coins at time of spending to their value at acquisition; sustained values
-below 1.0 signal that holders are capitulating at a loss \citep{kent2018sopr}.
+below 1.0 signal that holders are capitulating at a loss \citep{shirakashi2019sopr}.
 Short-Term Holder SOPR (STH-SOPR) isolates coins moved within the past
 155 days and functions as a real-time market stress indicator: sharp drops
 below 1.0 often mark local price floors.
 NVT (Network Value to Transactions) is a valuation ratio analogous to
 price-to-earnings; high NVT values suggest market capitalisation is running
 ahead of on-chain economic throughput, historically preceding corrections
-\citep{liv2019nvt}.
+\citep{woo2017nvt}.
 The consistent finding across multiple independent studies that on-chain
 metrics substantially outperform technical indicators in isolation
 \citep{omole2024financial, omole2025eaai} motivates their inclusion as
@@ -493,7 +501,7 @@ Their predictive relevance is confirmed a posteriori by SHAP analysis
 (Section~\ref{sec:shap}): Short-Term Holder SOPR ranks first across all
 folds, and 5 of the top-10 SHAP features belong to the on-chain group.
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
   \centering
   \includegraphics[width=\linewidth]{figures/fig1_walk_forward_diagram.pdf}
   \caption{Walk-forward expanding-window cross-validation protocol
@@ -571,7 +579,7 @@ which is described below and illustrated in Figure~\ref{fig:deca}:
 (iii) bidirectional cross-attention, and
 (iv) gated fusion followed by binary classification.
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
   \centering
   \includegraphics[width=90mm]{figures/fig_deca_architecture.pdf}
   \caption{DECA architecture overview.
@@ -717,7 +725,7 @@ and \citet{omole2024financial}, respectively.
     applied after the global RobustScaler, as SVMs are sensitive to
     feature scale.
 
-  \item[CNN-LSTM-G3] \citep{lecun2015deep}
+  \item[CNN-LSTM-G3] \citep{LeCun2015}
     The CNN-LSTM architecture combines a one-dimensional convolutional
     layer, which extracts local temporal patterns over a sliding
     window of $T$ days, with a stacked LSTM that models longer-range
@@ -1131,12 +1139,12 @@ Three model-level observations are noteworthy.
 First, DECA and SVM each achieve the highest per-fold MCC in three of
 the six folds, with DECA leading in 2020, 2021, and 2023 and SVM
 leading in 2019, 2022, and 2024, consistent with the statistical
-equivalence observed in Section~\ref{sec:statistical}.
+equivalence observed in Section~\ref{sec:stats}.
 Second, CNN-LSTM exhibits the largest fold-to-fold variance of all
 models, reinforcing its sensitivity to training-window composition
 under temporal cross-validation.
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
   \centering
   \includegraphics[width=\linewidth]{figures/perfold_mcc.pdf}
   \caption{Per-fold MCC for all models (folds 1--6, 2019--2024).
@@ -1222,7 +1230,7 @@ Figure~\ref{fig:shap} shows the mean absolute SHAP values averaged
 across folds 1--6 for the top 10 features of the XGBoost model, which
 serves as the reference interpretable baseline.
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
   \centering
   \includegraphics[width=72mm]{figures/shap_importance_bar.pdf}
   \caption{Mean absolute SHAP values for the top 10 features of
@@ -1274,7 +1282,7 @@ the on-chain signal hypothesis.
 The ROC curves in Figure~\ref{fig:roc} confirm DECA's consistently high
 discriminative power ($\mathrm{AUC}=0.910$) across all six folds.
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
   \centering
   \includegraphics[width=60mm]{figures/roc_curves.pdf}
   \caption{ROC curves for DECA across all six folds (2019--2024).
@@ -1323,7 +1331,7 @@ This temporal consistency indicates that the cross-domain interaction
 structure learned by DECA generalises across market regimes and is not
 an artefact of any particular training window.
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
   \centering
   \begin{subfigure}[t]{0.48\linewidth}
     \centering
@@ -1393,7 +1401,7 @@ maximum drawdown from $-$9.8\% to $-$8.8\% while raising Win Rate
 to 88.0\% and annualised ROR to 4{,}013\%, with no architectural
 change beyond retaining dropout at inference time.
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
   \centering
   \begin{subfigure}[t]{0.48\linewidth}
     \centering
@@ -1497,7 +1505,7 @@ Omole (2025)$^\ddagger$  & 4{,}970 & ---     & ---      & --- \\
 \end{tabular}
 \end{table}
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
   \centering
   \includegraphics[width=\linewidth]{figures/backtesting_cumulative.pdf}
   \caption{Cumulative portfolio value (log scale) for all five models
@@ -1609,7 +1617,7 @@ MC($k=3.0$)               & 3{,}683 & 14.34 & $-$8.4  & \textbf{92.2} & 74.1 \\
 \end{tabular}
 \end{table}
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
   \centering
   \includegraphics[width=\linewidth]{figures/dynamic_threshold_sweep.pdf}
   \caption{Effect of the confidence multiplier $k$ on four portfolio
@@ -1772,12 +1780,14 @@ market microstructure without full retraining, and extending the
 evaluation to additional cryptocurrencies and intraday resolutions to
 assess the generality of the on-chain dominance finding.
 
-\section*{Author Contributions}
+\section*{CRediT Authorship Contribution Statement}
 
-Author One: Conceptualization, Methodology, Software,
-Formal Analysis, Writing -- original draft.
-Author Two: Supervision, Writing -- review \& editing,
-Funding acquisition.
+\textbf{Author One}: Conceptualization, Methodology, Software,
+Validation, Formal Analysis, Investigation, Resources, Data Curation,
+Writing -- original draft, Writing -- review \& editing, Visualization.
+\textbf{Author Two}: Writing -- review \& editing.
+\textbf{Author Three}: Conceptualization, Supervision, Project Administration,
+Funding Acquisition.
 
 \section*{Declaration of Competing Interest}
 The authors declare that they have no known competing financial interests
@@ -1786,8 +1796,7 @@ reported in this paper.
 
 \section*{Data Availability}
 The dataset and code are available at
-\url{https://github.com/anonymous/bitcoin-deca}
-(will be made public upon acceptance).
+\url{https://github.com/HernanDiaz/BitcoinPricePrediction}.
 
 \bibliographystyle{elsarticle-harv}
 \bibliography{references}

@@ -83,6 +83,7 @@ paper/EAAI/eaai_final.*
 paper/EAAI/figures/Captura.PNG
 paper/EAAI/figures/mc_asym_*.pdf
 paper/EAAI/figures/dynamic_threshold_best.pdf
+paper/EAAI/authors_guide.pdf
 
 # ─── DECA v3 (not used in final paper) ───────────────────────────────────────
 onchain_direction/src/models/mlp_dual_encoder_v3.py
